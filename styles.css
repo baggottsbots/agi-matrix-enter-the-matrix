@@ -1,0 +1,373 @@
+/* ===== GLOBAL STYLES ===== */
+        /* CRT terminal aesthetic with Matrix green color scheme */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            font-family: 'Share Tech Mono', 'Courier New', Courier, monospace;
+            color: #FFFFFF;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ===== MATRIX RAIN CANVAS ===== */
+        /* Full-screen animated falling code behind all content */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.18;
+            pointer-events: none;
+        }
+
+        /* ===== CRT SCANLINE OVERLAY ===== */
+        /* Simulates old cathode-ray tube monitor scanlines */
+        .crt-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 255, 65, 0.015) 2px,
+                rgba(0, 255, 65, 0.015) 4px
+            );
+        }
+
+        /* ===== CRT VIGNETTE ===== */
+        /* Darkens edges like a real CRT monitor */
+        .crt-vignette {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.7) 100%);
+        }
+
+        /* ===== ALL CONTENT ABOVE CANVAS ===== */
+        .content-layer {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ===== GREEN GLOW TEXT EFFECT ===== */
+        /* Applied to headings for matrix terminal feel */
+        .glow-green {
+            color: #00FF41;
+            text-shadow:
+                0 0 5px #00FF41,
+                0 0 10px #00FF41,
+                0 0 20px #00FF41,
+                0 0 40px #00FF41;
+        }
+
+        .glow-teal {
+            color: #36D6B5;
+            text-shadow:
+                0 0 5px #36D6B5,
+                0 0 10px #36D6B5,
+                0 0 20px #36D6B5;
+        }
+
+        /* ===== GLITCH EFFECT ON HEADINGS ===== */
+        /* Creates a distorted, digital glitch animation */
+        @keyframes glitch {
+            0% { transform: translate(0); clip-path: none; }
+            2% { transform: translate(-3px, 1px); clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%); }
+            4% { transform: translate(3px, -1px); clip-path: polygon(0 60%, 100% 60%, 100% 70%, 0 70%); }
+            6% { transform: translate(0); clip-path: none; }
+            8% { transform: translate(2px, 2px); }
+            10% { transform: translate(0); }
+            92% { transform: translate(0); }
+            94% { transform: translate(-2px, 1px); color: #36D6B5; }
+            96% { transform: translate(2px, -1px); color: #00FF41; }
+            98% { transform: translate(-1px, 0); }
+            100% { transform: translate(0); }
+        }
+
+        @keyframes glitch-before {
+            0% { clip-path: polygon(0 0%, 100% 0%, 100% 5%, 0 5%); transform: translate(-2px); opacity: 0; }
+            5% { opacity: 0.8; }
+            10% { clip-path: polygon(0 80%, 100% 80%, 100% 90%, 0 90%); transform: translate(2px); }
+            15% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        .glitch-text {
+            position: relative;
+            animation: glitch 4s infinite;
+            display: inline-block;
+        }
+
+        .glitch-text::before {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #36D6B5;
+            animation: glitch-before 4s infinite;
+            opacity: 0;
+        }
+
+        /* ===== FLICKER ANIMATION ===== */
+        /* Subtle flicker for secondary headings */
+        @keyframes flicker {
+            0%, 95%, 100% { opacity: 1; }
+            96% { opacity: 0.4; }
+            97% { opacity: 1; }
+            98% { opacity: 0.6; }
+            99% { opacity: 1; }
+        }
+
+        .flicker {
+            animation: flicker 5s infinite;
+        }
+
+        /* ===== TYPEWRITER EFFECT ===== */
+        /* For the manifesto quote section */
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #00FF41; }
+        }
+
+        .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid #00FF41;
+            animation:
+                typing 3.5s steps(44, end) forwards,
+                blink-caret 0.75s step-end infinite;
+            max-width: 100%;
+        }
+
+        /* Mobile typewriter fix */
+        @media (max-width: 640px) {
+            .typewriter {
+                white-space: normal;
+                border-right: none;
+                animation: none;
+                color: #00FF41;
+            }
+            .typewriter-wrapper::after {
+                content: '_';
+                animation: blink-caret 0.75s step-end infinite;
+                color: #00FF41;
+            }
+        }
+
+        /* ===== TERMINAL INPUT STYLES ===== */
+        /* Black background, green border/text for Matrix terminal feel */
+        .terminal-input {
+            background-color: #000000;
+            border: 1px solid #00FF41;
+            color: #00FF41;
+            font-family: 'Share Tech Mono', 'Courier New', monospace;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            outline: none;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .terminal-input::placeholder {
+            color: #006620;
+            opacity: 1;
+        }
+
+        .terminal-input:focus {
+            border-color: #00FF41;
+            box-shadow:
+                0 0 8px #00FF41,
+                0 0 16px rgba(0, 255, 65, 0.4),
+                inset 0 0 8px rgba(0, 255, 65, 0.05);
+        }
+
+        /* ===== PRIMARY CTA BUTTON (TEAL) ===== */
+        /* Brand teal #36D6B5 for primary action buttons */
+        .btn-teal {
+            background-color: transparent;
+            border: 2px solid #36D6B5;
+            color: #36D6B5;
+            font-family: 'Share Tech Mono', 'Courier New', monospace;
+            font-size: 1.1rem;
+            letter-spacing: 0.15em;
+            padding: 1rem 2.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-teal::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: rgba(54, 214, 181, 0.15);
+            transition: left 0.3s ease;
+        }
+
+        .btn-teal:hover::before { left: 0; }
+
+        .btn-teal:hover {
+            box-shadow:
+                0 0 15px #36D6B5,
+                0 0 30px rgba(54, 214, 181, 0.4);
+            color: #FFFFFF;
+        }
+
+        /* ===== GREEN SUBMIT BUTTON ===== */
+        /* Matrix green for form submission */
+        .btn-green {
+            background-color: transparent;
+            border: 2px solid #00FF41;
+            color: #00FF41;
+            font-family: 'Share Tech Mono', 'Courier New', monospace;
+            font-size: 1rem;
+            letter-spacing: 0.12em;
+            padding: 1rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            width: 100%;
+        }
+
+        .btn-green:hover {
+            background-color: rgba(0, 255, 65, 0.1);
+            box-shadow:
+                0 0 15px #00FF41,
+                0 0 30px rgba(0, 255, 65, 0.3);
+            text-shadow: 0 0 8px #00FF41;
+        }
+
+        .btn-green:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ===== FEATURE CARD STYLES ===== */
+        /* Dark terminal-style cards with green border */
+        .feature-card {
+            background: rgba(0, 20, 0, 0.6);
+            border: 1px solid #00FF41;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00FF41, transparent);
+            animation: scan-line 3s linear infinite;
+        }
+
+        @keyframes scan-line {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .feature-card:hover {
+            border-color: #36D6B5;
+            box-shadow:
+                0 0 20px rgba(0, 255, 65, 0.2),
+                inset 0 0 20px rgba(0, 255, 65, 0.03);
+            transform: translateY(-2px);
+        }
+
+        /* ===== ABOUT COLUMN STYLES ===== */
+        .about-col {
+            background: rgba(0, 10, 0, 0.7);
+            border: 1px solid rgba(0, 255, 65, 0.4);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .about-col:hover {
+            border-color: #00FF41;
+            box-shadow: 0 0 25px rgba(0, 255, 65, 0.15);
+        }
+
+        /* ===== BLINKING CURSOR ===== */
+        @keyframes blink {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        .blink-cursor {
+            animation: blink 1s infinite;
+            color: #00FF41;
+        }
+
+        /* ===== SECTION DIVIDER ===== */
+        .matrix-divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00FF41, transparent);
+            margin: 0;
+            opacity: 0.4;
+        }
+
+        /* ===== QUOTE SECTION ===== */
+        .manifesto-bg {
+            background: rgba(0, 15, 0, 0.85);
+            border-top: 1px solid rgba(0, 255, 65, 0.3);
+            border-bottom: 1px solid rgba(0, 255, 65, 0.3);
+        }
+
+        /* ===== SUCCESS MESSAGE ===== */
+        .success-message {
+            border: 1px solid #00FF41;
+            background: rgba(0, 30, 0, 0.8);
+            color: #00FF41;
+            padding: 2rem;
+            text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* ===== NAVBAR STYLES ===== */
+        .navbar-matrix {
+            background: rgba(0, 0, 0, 0.9);
+            border-bottom: 1px solid rgba(0, 255, 65, 0.3);
+            backdrop-filter: blur(4px);
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero-bg {
+            min-height: 100vh;
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        /* ===== SCROLL BEHAVIOR ===== */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ===== RESPONSIVE TYPEWRITER ===== */
+        @media (min-width: 641px) {
+            .typewriter-wrapper {
+                display: inline-block;
+            }
+        }
