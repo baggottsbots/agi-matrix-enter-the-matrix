@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://baggottsbots.github.io/agi-matrix-enter-the-matrix/sitemap.xml
